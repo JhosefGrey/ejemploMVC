@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row justify-content-md-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                   Productos con ajax
+                </div>
+            </div>
+            <div class="card-body">
+                @using (Ajax.BeginForm("Buscar", "Home", new AjaxOptions
+                {
+                    InsertionMode = InsertionMode.Replace,
+                    HttpMethod = "GET",
+                    OnFailure = "searchFailed",
+                    LoadingElementId = "ajax-loader",
+                    UpdateTargetId = "searchResult",
+
+                }))
+                {
+                    <input type="text" name="nombre" class="form-control" />
+                    <input type="submit" value="Buscar" class="btn btn-success" />
+                        <img id="ajax-loader"
+                             src="@Url.Content("~/Content/loader.gif")"
+                             style="display:none" />
+                }
+            </div>
+        </div>
+        <div class="ajax-loader"></div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th colspan="7">Productos</th>
+                </tr>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+
+                </tr>
+            </thead>
+            <tbody id="searchResult"></tbody>
+        </table>
+
+    </div>  
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            AjaxInit();
+
+            function searchFailed() {
+                $("#searchResult").html("Sorry, there was a problem with the search.");
+            }
+        });
+
+         function AjaxInit() {
+            $.ajax({
+                url: '@Url.Action("Inicio", "Home")',
+                contentType: "application/json; charset=utf-8",
+                dataType: "html", 
+                success: successFunc,
+                error: errorFunc
+            });
+        }
+
+        function successFunc(data) {
+            $("#searchResult").html(data);
+        }
+
+        function errorFunc() {
+            $("#searchResult").html("Sorry, there was a problem with the search.");
+        }
+    </script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+}

@@ -1,0 +1,12 @@
+﻿
+@model IEnumerable<ejemploMvc.Models.productoModel>
+@{ int STT = 0;}
+@foreach (var m in Model)
+{
+    STT++;
+    <tr>
+        <td>@m.Nombre</td>
+        <td>@m.Precio</td>
+
+    </tr>
+}

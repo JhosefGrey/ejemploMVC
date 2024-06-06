@@ -1,0 +1,30 @@
+﻿@model ejemploMvc.Models.productoModel
+
+
+@using (Ajax.BeginForm("CrearProducto", "Home", new AjaxOptions()
+{
+    HttpMethod = "POST",
+    InsertionMode = InsertionMode.Replace,
+    LoadingElementId = "loader",
+    OnFailure = "displayError",
+    OnComplete = "clean"
+}, new { @class = "row g-3 my-3" }))
+{
+
+
+        <div class="col-12 col-md-6">
+            <label for="txtNombre" class="form-label">Nombre</label>
+            @*<input type="text" class="form-control" id="inputEmail4">*@
+            @Html.TextBoxFor(x => x.Nombre, new {   @class = "form-control", @id ="txtNombre"  })
+        </div>
+        <div class="col-md-6">
+            <label for="txtPrecio" class="form-label">Precio</label>
+            @Html.TextBoxFor(x => x.Precio, new { @class = "form-control", @id = "txtPrecio", type = "number", min = "0", step = "0.01" })
+        </div>
+     
+        <div class="col-2">
+            <button type="submit" class="btn btn-primary">+</button>
+        </div>
+   
+
+}
