@@ -2,7 +2,19 @@
     ViewBag.Title = "Home Page";
 }
 
+
+<div class="row my-3">
+    <div class="alert alert-danger" role="alert" id="alertError" style="display: none" >
+        
+    </div>
+</div>
+
+
+@Html.Partial("_Producto")
+
 <div class="row justify-content-md-center">
+
+
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
@@ -21,11 +33,13 @@
 
                 }))
                 {
-                    <input type="text" name="nombre" class="form-control" />
-                    <input type="submit" value="Buscar" class="btn btn-success" />
-                        <img id="ajax-loader"
-                             src="@Url.Content("~/Content/loader.gif")"
-                             style="display:none" />
+                  <div class="d-flex flex-row">
+                      <input type="text" name="nombre" class="form-control" />
+                      <input type="submit" value="Buscar" class="btn btn-success" />
+                      <img id="ajax-loader"
+                           src="@Url.Content("~/Content/loader.gif")"
+                           style="display:none" />
+                  </div>
                 }
             </div>
         </div>
@@ -53,7 +67,7 @@
             AjaxInit();
 
             function searchFailed() {
-                $("#searchResult").html("Sorry, there was a problem with the search.");
+                $("#searchResult").html("Error: Error con la busqueda");
             }
         });
 
@@ -72,8 +86,34 @@
         }
 
         function errorFunc() {
-            $("#searchResult").html("Sorry, there was a problem with the search.");
+            $("#searchResult").html("Error: Error con la data");
         }
+
+        function errorFuncCreate() {
+            $("#searchResult").html("Error: Error con la creación del producto");
+        }
+
+
+        function clean() {
+            $("#txtNombre").val('');
+            $("#txtPrecio").val('');
+        }
+
+        function success(data) {
+            console.log(data);
+
+            if (data.success) {
+                $("#alertError").hide();
+
+                $("#searchResult").append(`<tr> <td>${data.data.Nombre}</td> <td> ${data.data.Precio} </td>  </tr>`)
+            } else {
+                $("#alertError").show();
+
+                $("#alertError").append(`<b> ${data.data} </b>`)
+            }
+
+        }
+
     </script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 }

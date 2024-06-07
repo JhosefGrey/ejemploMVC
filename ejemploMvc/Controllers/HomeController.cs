@@ -54,6 +54,22 @@ namespace ejemploMvc.Controllers
         }
 
 
+        public JsonResult CrearProducto(productoModel obj)
+        {
+            var productos = Session["products"] as List<productoModel>;
+
+            if(string.IsNullOrWhiteSpace(obj.Nombre) || obj.Precio == 0)
+                return Json(new { success = false, data = "Complete los datos" }, JsonRequestBehavior.AllowGet);
+
+            obj.Id = Guid.NewGuid();
+
+            productos.Add(obj);
+       
+
+            return Json(new { success = true, data = obj }, JsonRequestBehavior.AllowGet);
+        }
+
+
         public List<productoModel> getProductos(string nombre)
         {
             var productos = Session["products"] as List<productoModel>;
